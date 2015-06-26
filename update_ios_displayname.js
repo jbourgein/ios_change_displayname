@@ -55,7 +55,6 @@ module.exports = function(context){
 	
 	//check we have ios platform in project
 	if(context.opts.platforms.indexOf('ios') < 0){
-		log('ios platform not found - hook terminating');
 		return;
 	}
 	
@@ -78,7 +77,12 @@ module.exports = function(context){
 				var existingProjectName = findCurrentBundleName(fullfilename);
 				var toReplace = '<string>' + existingProjectName +'</string>';
 				var replacement = '<string>' + appName +'</string>';
-				replace_string_in_file(fullfilename, toReplace,replacement);
+				if(toReplace !== replacement){
+					replace_string_in_file(fullfilename, toReplace,replacement);
+				}
+				else{
+					log('app display name already ' + appName + ' - nothing changed');
+				}
 			} else {
 				log("could not find: "+fullfilename);
 			}
